@@ -8,7 +8,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView"
+        android:id="@+id/backgroundImageView"
         android:layout_centerHorizontal="true"
         android:background="@drawable/background" />
 
@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="7-Day Forecast"
-        android:id="@+id/textView"
+        android:id="@+id/titleTextView"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="27dp"
@@ -26,17 +26,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="See Weather!"
-        android:id="@+id/button"
+        android:id="@+id/submitLocationButton"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
-        android:layout_above="@+id/button"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="143dp"
-        android:text="Enter Location" />
+        android:id="@+id/locationEditText"
+        android:hint="Enter Location"
+        android:layout_marginBottom="115dp"
+        android:layout_above="@+id/submitLocationButton"
+        android:layout_alignRight="@+id/submitLocationButton"
+        android:layout_alignEnd="@+id/submitLocationButton" />
 
 </RelativeLayout>
