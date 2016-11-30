@@ -1,21 +1,24 @@
 package com.epicodus.weatherforecast.ui;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ListView;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.epicodus.weatherforecast.R;
 import com.epicodus.weatherforecast.models.Weather;
+import com.epicodus.weatherforecast.services.WeatherService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class WeatherActivity extends AppCompatActivity {
-    @Bind(R.id.listView)
-    ListView mListView;
+
 
     public ArrayList<Weather> mWeather = new ArrayList<>();
 
@@ -29,42 +32,29 @@ public class WeatherActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String location = intent.getStringExtra("location");
+
+        getWeather(location);
     }
 
-//    private void getWeather(String location) {
-//        final WeatherService weatherService = new WeatherService();
-//
-//        weatherService.findWeather(location, new Callback() {
-//
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response){
-//                mWeather = weatherService.processResults(response);
-//
-//                WeatherActivity.this.runOnUiThread(new Runnable() {
-//
-//                    @Override
-//                    public void run() {
-//                        String[] restaurantNames = new String[mWeather.size()];
-//                        for (int i = 0; i < restaurantNames.length; i++) {
-//                            restaurantNames[i] = mWeather.get(i).getName();
-//                        }
-//
-//
-//                        ArrayAdapter adapter = new ArrayAdapter(WeatherActivity.this, android.R.layout.simple_list_item_1, restaurantNames);
-//                        mListView.setAdapter(adapter);
-//
-//                        for (Weather restaurant : mWeather) {
-//                            Log.d(TAG, "Name: " + restaurant.getName());
-//                        }
-//                    }
-//                });
-//            }
-//
-//        });
-//    }
+    private void getWeather(String location) {
+        final WeatherService weatherService = new WeatherService();
+        weatherService.findWeather(location, new Callback() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    String jsonData = response.body().string();
+                    Log.v(TAG, "JSON: " + jsonData);
+            } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        });
+    }
 }
