@@ -46,13 +46,17 @@ public class WeatherActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                try {
-                    String jsonData = response.body().string();
-                    Log.v(TAG, "JSON: " + jsonData);
-            } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            public void onResponse(Call call, Response response) {
+//                try {
+//                    String jsonDataaa = response.body().string();
+//                    Log.v(TAG, "JSON: " + jsonDataaa);
+//                    if (response.isSuccessful()) {
+                        Log.v(TAG, "Successful Response");
+                        mWeather = weatherService.processResults(response);
+//                    }
+//            } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
             }
 
         });
