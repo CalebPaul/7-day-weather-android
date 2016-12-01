@@ -3,6 +3,8 @@ package com.epicodus.weatherforecast.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.epicodus.weatherforecast.R;
@@ -12,6 +14,7 @@ import com.epicodus.weatherforecast.services.WeatherService;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -21,6 +24,10 @@ public class WeatherActivity extends AppCompatActivity {
 
 
     public ArrayList<Weather> mWeather = new ArrayList<>();
+
+
+    @Bind(R.id.recyclerView) RecyclerView mRecyclerView;
+    private WeatherListAdapter mAdapter;
 
     public static final String TAG = WeatherActivity.class.getSimpleName();
 
@@ -47,18 +54,21 @@ public class WeatherActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) {
-//                try {
-//                    String jsonDataaa = response.body().string();
-//                    Log.v(TAG, "JSON: " + jsonDataaa);
-//                    if (response.isSuccessful()) {
-                        Log.v(TAG, "Successful Response");
-                        mWeather = weatherService.processResults(response);
-//                    }
-//            } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-            }
+                Log.v(TAG, "Successful Response");
+                mWeather = weatherService.processResults(response);
 
+                WeatherActivity.this.runOnUiThread(new Runnable(){
+                    @Override
+                    public void run(){
+                        mAdapter = new WeatherListAdapter(getApplicationContext(), mWeather);
+                        mRecyclerView.setAdapter(mAdapter);
+                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(WeatherActivity.this);
+                        mRecyclerView.LayoutManager(layoutManager);
+                        mRecyclerView.setHasFixedSize(true);
+
+                    }
+                });
+            }
         });
     }
 }
